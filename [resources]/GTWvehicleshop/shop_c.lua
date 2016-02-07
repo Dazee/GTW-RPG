@@ -109,6 +109,17 @@ exports.GTWgui:setDefaultFont(lbl_name, 14)
 exports.GTWgui:setDefaultFont(lbl_price, 20)
 exports.GTWgui:setDefaultFont(vehicle_list_shop, 10)
 
+function comma_value(amount) -- formats numbers adding , to them for example 5555 converts into 5,555 and 55555 into 55,555 and so on.
+  local formatted = amount
+  while true do  
+    formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+    if (k==0) then
+      break
+    end
+  end
+  return formatted
+end
+
 function renderShopFurning()
 	dxDrawRectangle(0, gH * 0.8, gW, gH * 0.2, tocolor(0, 0, 0, 150), false)
 end
@@ -193,7 +204,7 @@ function()
 		dataShop[1] = guiGridListGetItemText(source, row, column)
 		dataShop[2] = tostring(guiGridListGetItemData(vehicle_list_shop, row, column))
 		guiSetText(lbl_name, dataShop[1])
-		guiSetText(lbl_price, "$"..dataShop[2]*priceMultiplier)
+		guiSetText(lbl_price, "$"..comma_value(dataShop[2]*priceMultiplier).."")
 		setElementModel(dummieCar, getVehicleModelFromName(vehName))
 	end
 end)
